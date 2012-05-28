@@ -1,0 +1,55 @@
+//
+// Nanny main sass file
+//
+// Here should be your HTML structure
+//
+// Copyright (C) 2012 Nikolay Nemshilov
+//
+
+div.nanny, div.nanny > *
+  margin:      0
+  padding:     0
+  float:       none
+  background:  none
+  border:      none
+  text-align:  left
+  display:     block
+  position:    static
+  top:         auto
+  left:        auto
+  right:       auto
+  bottom:      auto
+  width:       auto
+  height:      auto
+  line-height: 1.2em
+  font-size:   1em
+
+div.nanny
+  position:         absolute
+  background-color: rgba(255,255,200, 1)
+  border:           1px solid rgba(255,220,200,.8)
+  border-radius:    .5em
+  box-shadow:       1px 1px 10px rgba(0,0,0,.5)
+
+  > div.nanny-icon
+    position:      absolute
+    right:         -.6em
+    top:           -.6em
+    width:         1.2em
+    height:        1.2em
+    border-radius: .8em
+    background:    rgba(255,255,255,1)
+    border:        3px solid rgba(100,100,0,.2)
+    color:         rgba(100,100,0,.2)
+    cursor:        pointer
+
+    &:before
+     content:     '\u2715'
+     display:     block
+     width:       100%
+     text-align:  center
+     font-weight: bold
+
+  > div.nanny-body
+    margin: 1em
+

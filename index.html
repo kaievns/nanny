@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nanny Demo</title>
+    <link href="/shared.css" rel="stylesheet" type="text/css" />
+    <script src="/core.js"></script>
+    <script type="text/javascript">
+      Lovely(["nanny"], function() {
+
+      });
+    </script>
+    <style type="text/css">
+      .nanny-test div {
+        display:       inline-block;
+        width:         12em;
+        height:        12em;
+        line-height:   12em;
+        text-align:    center;
+        background:    #eee;
+        margin:        0 1em 1em 0;
+        border-radius: .5em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Nanny Demo</h1>
+
+    <div class="nanny-test">
+      <div data-nanny="" title="<h3>This the block #1</h3><p>It should make you really happy</p>"><b>Block 1<b></div>
+      <div data-nanny-location="right" title="&lt;h3&gt;This the block #2&lt;/h3&gt;&lt;p&gt;It should make you really happy&lt;/p&gt;"><b>Block 2</b></div>
+    </div>
+
+    <div class="nanny-test">
+      <div data-nanny-location="left" data-nanny-html="<h3>This the block #3</h3><p>It should make you really happy</p>"><b>Block 3</b></div>
+      <div data-nanny-location="bottom" data-nanny-html="&lt;h3&gt;This the block #4&lt;/h3&gt;&lt;p&gt;It should make you really happy&lt;/p&gt;"><b>Block 4</b></div>
+    </div>
+  </body>
+</html>
