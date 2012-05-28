@@ -7,10 +7,11 @@ class Nanny extends Element
   include: core.Options
   extend:
     Options:
-      html:       null     # default html
-      location:   'top'    # location top/left/right/bottom
-      fxName:     'fade'
-      fxDuration: 'normal'
+      scope:      document.body  # working scope element
+      timeout:    4000           # how long each piece should hang
+      position:   'top'          # default message position
+      fxName:     'fade'         # name of the visual effect to use
+      fxDuration: 'normal'       # visual effect duration
 
   #
   # Basic constructor
@@ -18,12 +19,7 @@ class Nanny extends Element
   # @param {Object} options
   #
   constructor: (options)->
-    options = options[0] if options instanceof NodeList
-
-    if options instanceof $.Element
-      @scope options
-    else
-      @setOptions options
+    @setOptions(options)
 
     super 'div', class: 'nanny'
 
@@ -43,15 +39,27 @@ class Nanny extends Element
   # @return {Nanny} self
   #
   show: ->
-    return @ if !@_scope
+    blocks  = @blocks()
 
-    @style(display: 'none').insertTo(@_scope, 'top')
-    @body.html @options.html
-    @removeClass('nanny-top').removeClass('nanny-left').removeClass('nanny-right').removeClass('nanny-bottom')
-    @addClass "nanny-#{@options.location}"
+    console.log('showing');
+
+    if @_block = blocks[blocks.indexOf(@_block) + 1] || blocks[0]
+      options = @_block.data('nanny') || {}
+      options.html or= @_block.attr('title') || ''
+      options.position or= @options.position
+
+      @removeClass('nanny-top').removeClass('nanny-left').removeClass('nanny-right').removeClass('nanny-bottom')
+      @addClass("nanny-#{options.position}").body.html options.html
+      @insertTo document.body
+
+      window.setTimeout =>
+        @show()
+      , @options.timeout
 
     @$super(@options.fxName, duration: @options.fxDuration, finish: => @fire('show'))
     if @options.fxName then @ else @fire('show')
+
+
 
   #
   # Hides an open nanny and removes it out of the dom's tree
@@ -64,28 +72,11 @@ class Nanny extends Element
 
 
   #
-  # sets/reads the current scope
+  # Finds the list of blocks that should be nannyed
   #
-  # @param {HTMLElement|dom.Element} the scope element
-  # @return {Nanny|dom.Element}
+  # @return {dom.NodeList} elements
   #
-  scope: (element)->
-    if element is undefined
-      return @_scope
-
-    else
-      @_scope = $(element)
-      @_scope = @_scope[0] if @_scope instanceof NodeList
-
-      if @_scope
-        @_scope.on
-          mouseenter: => @show()
-          mouseleave: => @hide()
-
-        options = @_scope.data('nanny') || {}
-        options.html or= @_scope.attr('title') || ''
-        @_scope.attr('title', null)
-
-        @_scope.nanny = @setOptions options
-
-    return @
+  blocks: ->
+    $(@options.scope).find """
+      *[data-nanny], *[data-nanny-html], *[data-nanny-position]
+    """

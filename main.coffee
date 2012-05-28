@@ -16,8 +16,7 @@ NodeList = $.NodeList
 
 # glue in your files
 include 'src/nanny'
-include 'src/document'
 
 # export your objects in the module
-ext Nanny,
+return ext Nanny,
   version: '%{version}'
