@@ -39,18 +39,16 @@ class Nanny extends Element
   # @return {Nanny} self
   #
   show: ->
-    blocks  = @blocks()
-
-    console.log('showing');
-
-    if @_block = blocks[blocks.indexOf(@_block) + 1] || blocks[0]
-      options = @_block.data('nanny') || {}
-      options.html or= @_block.attr('title') || ''
+    if block = @nextBlock()
+      options = block.data('nanny') || {}
+      options.html     or= block.attr('title') || ''
       options.position or= @options.position
 
       @removeClass('nanny-top').removeClass('nanny-left').removeClass('nanny-right').removeClass('nanny-bottom')
       @addClass("nanny-#{options.position}").body.html options.html
       @insertTo document.body
+
+      @moveNextTo(block)
 
       window.setTimeout =>
         @show()
@@ -70,13 +68,42 @@ class Nanny extends Element
     @$super(@options.fxName, duration: @options.fxDuration, finish: => @fire('hide'))
     if @options.fxName then @ else @fire('hide')
 
+  #
+  # Moves the nanny next to the block
+  #
+  # @param {dom.Element} refereced block
+  # @return {Nanny} self
+  #
+  moveNextTo: (block)->
+    position = block.position(); size = block.size(); offset = 8
+
+    position = switch block.data('nanny-position') || @options.position
+      when 'top'
+        x: position.x + (size.x   - @size().x)/2
+        y: position.y - @size().y - offset
+      when 'left'
+        x: position.x + size.x  + offset
+        y: position.y + (size.y - @size().y)/2
+      when 'right'
+        x: position.x - @size().x - offset
+        y: position.y + (size.y   - @size().y)/2
+      else # bottom
+        x: position.x + (size.x - @size().x)/2
+        y: position.y + size.y  + offset
+
+    position.x = offset if position.x < offset
+    position.y = offset if position.y < offset
+
+    @position position
 
   #
   # Finds the list of blocks that should be nannyed
   #
   # @return {dom.NodeList} elements
   #
-  blocks: ->
-    $(@options.scope).find """
+  nextBlock: ->
+    blocks = $(@options.scope).find """
       *[data-nanny], *[data-nanny-html], *[data-nanny-position]
     """
+
+    @_block = blocks[blocks.indexOf(@_block) + 1] || blocks[0]
