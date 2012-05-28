@@ -10,6 +10,7 @@ class Nanny extends Element
       scope:      document.body  # working scope element
       timeout:    4000           # how long each piece should hang
       position:   'top'          # default message position
+      loop:       true           # whether to loop or not through the helpers
       fxName:     'fade'         # name of the visual effect to use
       fxDuration: 'normal'       # visual effect duration
 
@@ -27,7 +28,7 @@ class Nanny extends Element
       @icon = new Element('div', class: 'nanny-icon'),
       @body = new Element('div', class: 'nanny-body'))
 
-    @icon.on('click', => @hide())
+    @icon.on('click', => @_closed = true; @hide())
 
     return @
 
@@ -43,6 +44,7 @@ class Nanny extends Element
       options = block.data('nanny') || {}
       options.html     or= block.attr('title') || ''
       options.position or= @options.position
+      options.timeout  or= @options.timeout
 
       @removeClass('nanny-top').removeClass('nanny-left').removeClass('nanny-right').removeClass('nanny-bottom')
       @addClass("nanny-#{options.position}").body.html options.html
@@ -51,13 +53,14 @@ class Nanny extends Element
       @moveNextTo(block)
 
       window.setTimeout =>
-        @show()
-      , @options.timeout
+        @show() unless @_closed
+      , options.timeout
 
-    @$super(@options.fxName, duration: @options.fxDuration, finish: => @fire('show'))
-    if @options.fxName then @ else @fire('show')
+      @$super(@options.fxName, duration: @options.fxDuration, finish: => @fire('show'))
+      if @options.fxName then @ else @fire('show')
 
-
+    else
+      @hide()
 
   #
   # Hides an open nanny and removes it out of the dom's tree
@@ -106,4 +109,5 @@ class Nanny extends Element
       *[data-nanny], *[data-nanny-html], *[data-nanny-position]
     """
 
-    @_block = blocks[blocks.indexOf(@_block) + 1] || blocks[0]
+    if @options.loop || !@_block || @_block isnt blocks[blocks.length - 1]
+      return @_block = blocks[blocks.indexOf(@_block) + 1] || blocks[0]
