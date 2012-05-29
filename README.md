@@ -7,32 +7,29 @@ Nanny is a little package that will help you to create UI walkthroughs
 Firstly you'll need to add `data-nanny-html` attributes to the blocks where you want
 the helper texts to appear
 
-```html
-<div data-nanny-html="This block does some useful thing">
-  Very useful block of stuff
-</div>
-<div data-nanny-html="This block does something else">
-  Some other block
-</div>
-```
+    :html
+    <div data-nanny-html="This block does some useful thing">
+      Very useful block of stuff
+    </div>
+    <div data-nanny-html="This block does something else">
+      Some other block
+    </div>
 
 You also can specify at which side of your block the popup should appear
 
-```html
-<div data-nanny-html="..." data-nanny-position="left">....</div>
-<div data-nanny-html="..." data-nanny-position="bottom">....</div>
-```
+    :html
+    <div data-nanny-html="..." data-nanny-position="left">....</div>
+    <div data-nanny-html="..." data-nanny-position="bottom">....</div>
 
 Once you're done with that, just initialize the `Nanny` object through the `Lovely`
-interface and call the `Nanny#show()` method
+interface and call the `Nanny#start()` method
 
-```js
-Lovely(['nanny-1.0.0'], function(Nanny) {
-  // when you're ready
-  var nanny = new Nanny({options: 'here'});
-  nanny.show();
-});
-```
+    :js
+    Lovely(['nanny-1.0.0'], function(Nanny) {
+      // when you're ready
+      var nanny = new Nanny({options: 'here'});
+      nanny.start();
+    });
 
 This will start showing the helper texts over the marked blocks
 
