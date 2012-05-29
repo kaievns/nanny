@@ -50,16 +50,16 @@ class Nanny extends Element
 
       @removeClass('nanny-top').removeClass('nanny-left').removeClass('nanny-right').removeClass('nanny-bottom')
       @addClass("nanny-#{options.position}").body.html options.html
-      @insertTo document.body
+      @style(visibility: 'hidden').insertTo document.body
 
-      @moveNextTo(block)
+      @moveNextTo(block).style(display: 'none', visibility: 'visible')
 
       window.setTimeout =>
         @show() unless @_closed
       , options.timeout
 
-      @$super(@options.fxName, duration: @options.fxDuration, finish: => @fire('show'))
-      if @options.fxName then @ else @fire('show')
+      @$super(@options.fxName, duration: @options.fxDuration, finish: => @emit('show'))
+      if @options.fxName then @ else @emit('show')
 
     else
       @hide()
@@ -70,8 +70,8 @@ class Nanny extends Element
   # @return {Nanny} self
   #
   hide: ->
-    @$super(@options.fxName, duration: @options.fxDuration, finish: => @fire('hide'))
-    if @options.fxName then @ else @fire('hide')
+    @$super(@options.fxName, duration: @options.fxDuration, finish: => @emit('hide'))
+    if @options.fxName then @ else @emit('hide')
 
   #
   # Moves the nanny next to the block
