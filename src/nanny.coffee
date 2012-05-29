@@ -11,6 +11,7 @@ class Nanny extends Element
       timeout:    4000           # how long each piece should hang
       position:   'top'          # default message position
       loop:       true           # whether to loop or not through the helpers
+      html:       ''             # default html content
       fxName:     'fade'         # name of the visual effect to use
       fxDuration: 'normal'       # visual effect duration
 
@@ -42,7 +43,8 @@ class Nanny extends Element
   show: ->
     if block = @nextBlock()
       options = block.data('nanny') || {}
-      options.html     or= block.attr('title') || ''
+
+      options.html     or= @options.html
       options.position or= @options.position
       options.timeout  or= @options.timeout
 
@@ -80,16 +82,16 @@ class Nanny extends Element
   moveNextTo: (block)->
     position = block.position(); size = block.size(); offset = 8
 
-    position = switch block.data('nanny-position') || @options.position
+    position = switch (block.data('nanny') || {}).position || @options.position
       when 'top'
         x: position.x + (size.x   - @size().x)/2
         y: position.y - @size().y - offset
       when 'left'
-        x: position.x + size.x  + offset
-        y: position.y + (size.y - @size().y)/2
-      when 'right'
         x: position.x - @size().x - offset
         y: position.y + (size.y   - @size().y)/2
+      when 'right'
+        x: position.x + size.x  + offset
+        y: position.y + (size.y - @size().y)/2
       else # bottom
         x: position.x + (size.x - @size().x)/2
         y: position.y + size.y  + offset
