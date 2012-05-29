@@ -80,24 +80,28 @@ class Nanny extends Element
   # @return {Nanny} self
   #
   moveNextTo: (block)->
-    position = block.position(); size = block.size(); offset = 8
+    position = block.position(); size = block.size()
+    box = @size(); win = $(window).size(); offset = 8
 
     position = switch (block.data('nanny') || {}).position || @options.position
       when 'top'
-        x: position.x + (size.x   - @size().x)/2
-        y: position.y - @size().y - offset
+        x: position.x + (size.x - box.x)/2
+        y: position.y - box.y   - offset
       when 'left'
-        x: position.x - @size().x - offset
-        y: position.y + (size.y   - @size().y)/2
+        x: position.x - box.x   - offset
+        y: position.y + (size.y - box.y)/2
       when 'right'
         x: position.x + size.x  + offset
-        y: position.y + (size.y - @size().y)/2
+        y: position.y + (size.y - box.y)/2
       else # bottom
-        x: position.x + (size.x - @size().x)/2
+        x: position.x + (size.x - box.x)/2
         y: position.y + size.y  + offset
 
     position.x = offset if position.x < offset
     position.y = offset if position.y < offset
+
+    position.x = win.x - box.x - offset if win.x < (position.x + box.x + offset)
+    position.y = win.y - box.y - offset if win.y < (position.y + box.y + offset)
 
     @position position
 
