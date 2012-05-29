@@ -29,7 +29,7 @@ class Nanny extends Element
       @icon = new Element('div', class: 'nanny-icon'),
       @body = new Element('div', class: 'nanny-body'))
 
-    @icon.on('click', => @_closed = true; @hide())
+    @icon.on('click', => @_closed = true; @hide().emit('close'))
 
     return @
 
