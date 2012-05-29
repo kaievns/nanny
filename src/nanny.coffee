@@ -7,7 +7,7 @@ class Nanny extends Element
   include: core.Options
   extend:
     Options:
-      scope:      document.body  # working scope element
+      scope:      document.documentElement  # working scope element
       timeout:    4000           # how long each piece should hang
       position:   'top'          # default message position
       loop:       true           # whether to loop or not through the helpers
@@ -29,18 +29,55 @@ class Nanny extends Element
       @icon = new Element('div', class: 'nanny-icon'),
       @body = new Element('div', class: 'nanny-body'))
 
-    @icon.on('click', => @_closed = true; @hide().emit('close'))
+    @icon.on('click', => @stop())
 
     return @
 
   #
-  # Shows the nanny at the scope element
-  #
-  # NOTE: wont' do anything if the scope element is not set
+  # Starts the walkthrough
   #
   # @return {Nanny} self
   #
-  show: ->
+  start: ->
+    @_stopped = false
+    @_block   = null
+    @emit('start').showNext()
+
+  #
+  # Stops the walkthough
+  #
+  # @return {Nanny} self
+  #
+  stop: ->
+    @_stopped = true
+    @emit('stop').hide()
+
+  #
+  # Shows the block
+  #
+  # @return {Nanny} self
+  #
+  show: (fx, options)->
+    @$super(fx || @options.fxName, options || duration: @options.fxDuration, finish: => @emit('show'))
+    if @options.fxName then @ else @emit('show')
+
+  #
+  # Hides an open nanny and removes it out of the dom's tree
+  #
+  # @return {Nanny} self
+  #
+  hide: (fx, options)->
+    @$super(fx || @options.fxName, options || duration: @options.fxDuration, finish: => @emit('hide'))
+    if @options.fxName then @ else @emit('hide')
+
+# protected
+
+  #
+  # Shows the next block
+  #
+  # @return {Nanny} self
+  #
+  showNext: ->
     if block = @nextBlock()
       options = block.data('nanny') || {}
 
@@ -55,23 +92,13 @@ class Nanny extends Element
       @moveNextTo(block).style(display: 'none', visibility: 'visible')
 
       window.setTimeout =>
-        @show() unless @_closed
+        @showNext() unless @_stopped
       , options.timeout
 
-      @$super(@options.fxName, duration: @options.fxDuration, finish: => @emit('show'))
-      if @options.fxName then @ else @emit('show')
+      @show()
 
     else
       @hide()
-
-  #
-  # Hides an open nanny and removes it out of the dom's tree
-  #
-  # @return {Nanny} self
-  #
-  hide: ->
-    @$super(@options.fxName, duration: @options.fxDuration, finish: => @emit('hide'))
-    if @options.fxName then @ else @emit('hide')
 
   #
   # Moves the nanny next to the block
