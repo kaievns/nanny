@@ -49,9 +49,10 @@ This will start showing the helper texts over the marked blocks
 ## API Reference
 
 The `Nanny` class is inherited from the standard `dom.Element` class and has all the same API.
+Plus it has two additional methods for starting and stopping the popups show
 
-The only difference is that the `Nanny#show()` method starts looping through all the marked
-blocks in the scope element
+ * `#start()` - to start the show
+ * `#stop()` - is for stopping the show
 
 ## Events
 
@@ -59,7 +60,8 @@ blocks in the scope element
 
  * `show` - when it appears at a marked block
  * `hide` - when it gets hidden
- * `close` - when the user clicks the 'close' icon
+ * `start` - when the show starts
+ * `stop` - when the show get stopped
 
 
 
