@@ -1,7 +1,13 @@
 {
   "name":        "nanny",
-  "version":     "0.0.0",
-  "description": "My super lovely module",
+  "version":     "1.0.0",
+  "description": "UI walkthrough helper",
   "author":      "Nikolay Nemshilov",
-  "license":     "MIT"
+  "home_url":    "https://github.com/MadRabbit/nanny",
+  "license":     "MIT",
+  "tags":        "UI",
+  "dependencies": {
+    "ui"   : "1.1.2",
+    "dom"  : "1.2.0"
+  }
 }
