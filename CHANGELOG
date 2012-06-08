@@ -3,6 +3,7 @@
   * Version 1.1.0
   * Allow to set `timeout` option to `false` to disable auto-switching
   * Added the 'Next' button support
+  * Added the 'order' option
 
 2012-05-29 Nikolay Nemshilov
 

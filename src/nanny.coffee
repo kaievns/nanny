@@ -145,9 +145,8 @@ class Nanny extends Element
   # @return {dom.NodeList} elements
   #
   nextBlock: ->
-    blocks = $(@options.scope).find """
-      *[data-nanny], *[data-nanny-html], *[data-nanny-position]
-    """
+    blocks = $(@options.scope).find("*[data-nanny], *[data-nanny-html]").sort (a, b)->
+      (parseInt(a.data('nanny').order) || Infinity) - (parseInt(b.data('nanny').order) || Infinity)
 
     if @options.loop || !@_block || @_block isnt blocks[blocks.length - 1]
       return @_block = blocks[blocks.indexOf(@_block) + 1] || blocks[0]

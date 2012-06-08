@@ -33,6 +33,19 @@ interface and call the `Nanny#start()` method
 
 This will start showing the helper texts over the marked blocks
 
+## Specifying The Order
+
+If you need the popups to appear in a specific order, add the `data-nanny-order` attribute
+with some numbers
+
+    :html
+    <div data-nanny-html="..." data-nanny-order="1"></div>
+    <div data-nanny-html="..." data-nanny-order="2"></div>
+
+__NOTE__ all items that don't have the `order` attribute will be pushed to the end of the
+list giving the priority to the items with numbers.
+
+
 ## Options
 
  * `scope`      (document.body)  - working scope element
@@ -60,8 +73,6 @@ Plus it has two additional methods for starting and stopping the popups show
  * `hide` - when it gets hidden
  * `start` - when the show starts
  * `stop` - when the show get stopped
-
-
 
 ## Copyright And License
 
