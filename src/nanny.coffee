@@ -14,6 +14,7 @@ class Nanny extends Element
       html:       ''             # default html content
       fxName:     'fade'         # name of the visual effect to use
       fxDuration: 'normal'       # visual effect duration
+      showNext:   true           # show the 'next' link
 
   #
   # Basic constructor
@@ -26,10 +27,14 @@ class Nanny extends Element
     super 'div', class: 'nanny'
 
     @append(
-      @icon = new Element('div', class: 'nanny-icon'),
-      @body = new Element('div', class: 'nanny-body'))
+      @close = new Element('div', class: 'nanny-icon-close', title: 'Close'),
+      @next  = new Element('div', class: 'nanny-icon-next',  title: 'Show next'),
+      @body  = new Element('div', class: 'nanny-body'))
 
-    @icon.on('click', => @stop())
+    @addClass('nanny-no-next-icon') unless @options.showNext
+
+    @close.on('click', => @stop())
+    @next.on('click',  => @showNext())
 
     return @
 
@@ -91,9 +96,11 @@ class Nanny extends Element
 
       @moveNextTo(block).style(display: 'none', visibility: 'visible')
 
-      window.setTimeout =>
-        @showNext() unless @_stopped
-      , options.timeout
+      window.clearTimeout(@_timer) if @_timer
+      unless options.timeout is false
+        @_timer = window.setTimeout =>
+          @showNext() unless @_stopped
+        , options.timeout
 
       @show()
 

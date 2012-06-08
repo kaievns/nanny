@@ -75,11 +75,11 @@ div.nanny
     box-shadow:         -3px -3px 5px rgba(0,0,0,.15)
 
 
-  > div.nanny-icon
+  > div.nanny-icon-close, > div.nanny-icon-next
     position:      absolute
     right:         .25em
     top:           .1em
-    color:         rgba(200,0,0,.7)
+    color:         rgba(200,0,0,.5)
     cursor:        pointer
 
     &:before
@@ -89,8 +89,17 @@ div.nanny
      text-align:  center
      font-weight: bold
 
-    &:hover:before
-      text-shadow: 0px 0px 2px rgba(0,0,0,.2)
+    &:hover
+      color:         rgba(200,0,0,.7)
+
+  > div.nanny-icon-next
+    right: 1.25em
+
+    &:before
+      content: '\u27BD'
+  &.nanny-no-next-icon
+    > div.nanny-icon-next
+      display: none
 
   > div.nanny-body
     margin: 1em

@@ -36,12 +36,13 @@ This will start showing the helper texts over the marked blocks
 ## Options
 
  * `scope`      (document.body)  - working scope element
- * `timeout`    (4000)           - how long each piece should hang
+ * `timeout`    (4000)           - how long each piece should hang. set to `false` if you want to disable auto-switching
  * `position`   ('top')          - default message position
  * `loop`       (true)           - whether to loop or not through the helpers
  * `html`       ('')             - default html content
  * `fxName`     ('fade')         - name of the visual effect to use
  * `fxDuration` ('normal')       - visual effect duration
+ * `showNext`   (true)           - show the 'next' link or not
 
 ## API Reference
 
