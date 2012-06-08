@@ -1,13 +1,13 @@
 {
   "name":        "nanny",
-  "version":     "1.0.0",
+  "version":     "1.1.0",
   "description": "UI walkthrough helper",
   "author":      "Nikolay Nemshilov",
   "home_url":    "https://github.com/MadRabbit/nanny",
   "license":     "MIT",
   "tags":        "UI",
   "dependencies": {
-    "ui"   : "1.1.2",
+    "ui"   : "1.2.0",
     "dom"  : "1.2.0"
   }
 }
